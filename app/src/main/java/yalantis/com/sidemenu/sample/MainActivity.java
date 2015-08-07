@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.baidu.mapapi.SDKInitializer;
 
@@ -29,13 +30,22 @@ import yalantis.com.sidemenu.util.ViewAnimator;
 
 
 public class MainActivity extends ActionBarActivity implements ViewAnimator.ViewAnimatorListener {
+    /** DrawerLayout */
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     private List<SlideMenuItem> list = new ArrayList<>();
     private ContentFragment contentFragment;
     private ViewAnimator viewAnimator;
     private int res = R.drawable.content_music;
+    /** 左边栏菜单 */
     private LinearLayout linearLayout;
+    /** 右边栏 */
+    private RelativeLayout rightLayout;
+    /** 菜单打开/关闭状态 */
+    private boolean isDirection_left = false;
+    /** 右边栏打开/关闭状态 */
+    private boolean isDirection_right = false;
+    private View showView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +64,7 @@ public class MainActivity extends ActionBarActivity implements ViewAnimator.View
                 drawerLayout.closeDrawers();
             }
         });
-
+        rightLayout= (RelativeLayout) findViewById(R.id.right_drawer);
 
         setActionBar();
         createMenuList();
@@ -104,8 +114,11 @@ public class MainActivity extends ActionBarActivity implements ViewAnimator.View
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
                 super.onDrawerSlide(drawerView, slideOffset);
-                if (slideOffset > 0.6 && linearLayout.getChildCount() == 0)
+                if (drawerView==linearLayout && slideOffset > 0.6 && linearLayout.getChildCount() == 0)
                     viewAnimator.showMenuContent();
+                if(drawerView==rightLayout){
+
+                }
             }
 
             /** Called when a drawer has settled in a completely open state. */
@@ -183,7 +196,6 @@ public class MainActivity extends ActionBarActivity implements ViewAnimator.View
     public void enableHomeButton() {
         getSupportActionBar().setHomeButtonEnabled(true);
         drawerLayout.closeDrawers();
-
     }
 
     @Override
