@@ -1,1 +1,1 @@
-include ':app', ':library', ':bmaplibrary'
+include ':app','bmaplibrary','treelibrary'
