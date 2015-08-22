@@ -8,6 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.Marker;
+
 import main.gis.money.waterinfo.R;
 import money.gis.bmlibrary.BMap;
 import yalantis.com.sidemenu.interfaces.ScreenShotable;
@@ -17,6 +20,8 @@ public class MapFragment extends Fragment implements ScreenShotable{
 	public BMap getMyBaiduMap() {
 		return myBaiduMap;
 	}
+
+	private BaiduMap baiduMap;
 
 	BMap myBaiduMap;
 	private Bitmap bitmap;
@@ -37,7 +42,16 @@ public class MapFragment extends Fragment implements ScreenShotable{
 		// TODO Auto-generated method stub
 		View view = inflater.inflate(R.layout.fragment_layout, null);
 		myBaiduMap=new BMap(view);
-		myBaiduMap.initMap(R.id.bmapView, 113.255552, 23.121212, 12);
+		baiduMap=myBaiduMap.initMap(R.id.bmapView, 113.255552, 23.121212, 12);
+		baiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener(){
+			@Override
+			public boolean onMarkerClick(Marker marker) {
+				Bundle bundle= marker.getExtraInfo();
+				String stationCode= bundle.getString("key");
+				// TODO: 2015/8/22 获取历史信息
+				return false;
+			}
+		});
 		return view;
 	}
 
