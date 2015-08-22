@@ -16,9 +16,6 @@ import main.gis.money.waterinfo.R;
  * Created by Bogdan Melnychuk on 2/13/15.
  */
 public class SocialViewHolder extends TreeNode.BaseNodeViewHolder<SocialViewHolder.SocialItem> {
-
-    private static final String[] NAMES = new String[]{"Bruce Wayne", "Clark Kent", "Barry Allen", "Hal Jordan"};
-
     public SocialViewHolder(Context context) {
         super(context);
     }
@@ -28,18 +25,17 @@ public class SocialViewHolder extends TreeNode.BaseNodeViewHolder<SocialViewHold
         final LayoutInflater inflater = LayoutInflater.from(context);
         final View view = inflater.inflate(R.layout.layout_social_node, null, false);
 
-//        final PrintView iconView = (PrintView) view.findViewById(R.id.icon);
-//        iconView.setIconText(context.getResources().getString(value.icon));
+        final PrintView iconView = (PrintView) view.findViewById(R.id.icon);
+        iconView.setIconText(context.getResources().getString(value.icon));
 
         TextView connectionsLabel = (TextView) view.findViewById(R.id.connections);
-        Random r = new Random();
-        connectionsLabel.setText(r.nextInt(150) + " connections");
+        connectionsLabel.setText(value.checkTime);
 
         TextView userNameLabel = (TextView) view.findViewById(R.id.username);
-        userNameLabel.setText(NAMES[r.nextInt(4)]);
+        userNameLabel.setText(value.stationName);
 
         TextView sizeText = (TextView) view.findViewById(R.id.size);
-        sizeText.setText(r.nextInt(10) + " items");
+        sizeText.setText(value.checkValue);
 
         return view;
     }
@@ -52,8 +48,17 @@ public class SocialViewHolder extends TreeNode.BaseNodeViewHolder<SocialViewHold
     public static class SocialItem {
         public int icon;
 
-        public SocialItem(int icon) {
+        public String stationName;
+
+        public String checkTime;
+
+        public String checkValue;
+
+        public SocialItem(int icon, String stationName, String checkTime, String checkValue, String unit) {
             this.icon = icon;
+            this.stationName = stationName;
+            this.checkTime = checkTime;
+            this.checkValue = checkValue + " " + unit;
         }
         // rest will be hardcoded
     }

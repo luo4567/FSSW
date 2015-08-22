@@ -34,8 +34,8 @@ public class PlaceHolderHolder extends TreeNode.BaseNodeViewHolder<PlaceHolderHo
         Random r = new Random();
         boolean like = r.nextBoolean();
 
-//        PrintView likeView = (PrintView) view.findViewById(R.id.like);
-//        likeView.setIconText(context.getString(like ? R.string.ic_thumbs_up : R.string.ic_thumbs_down));
+        PrintView likeView = (PrintView) view.findViewById(R.id.like);
+        likeView.setIconText(context.getString(like ? R.string.ic_thumbs_up : R.string.ic_thumbs_down));
         return view;
     }
 

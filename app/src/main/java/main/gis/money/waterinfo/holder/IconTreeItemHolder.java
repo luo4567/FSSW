@@ -28,10 +28,10 @@ public class IconTreeItemHolder extends TreeNode.BaseNodeViewHolder<IconTreeItem
         tvValue = (TextView) view.findViewById(R.id.node_value);
         tvValue.setText(value.text);
 
-//        final PrintView iconView = (PrintView) view.findViewById(R.id.icon);
-//        iconView.setIconText(context.getResources().getString(value.icon));
+        final PrintView iconView = (PrintView) view.findViewById(R.id.icon);
+        iconView.setIconText(context.getResources().getString(value.icon));
 
-//        arrowView = (PrintView) view.findViewById(R.id.arrow_icon);
+        arrowView = (PrintView) view.findViewById(R.id.arrow_icon);
 
         view.findViewById(R.id.btn_addFolder).setOnClickListener(new View.OnClickListener() {
             @Override

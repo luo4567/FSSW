@@ -1,238 +1,196 @@
 package main.gis.money.waterinfo;
 
-import android.graphics.Color;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.view.GravityCompat;
+import android.content.res.Configuration;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.view.animation.AccelerateInterpolator;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.unnamed.b.atv.model.TreeNode;
-import com.unnamed.b.atv.view.AndroidTreeView;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import main.gis.money.materialmenu.MaterialMenuDrawable;
-import main.gis.money.materialmenu.MaterialMenuIcon;
-import main.gis.money.waterinfo.holder.HeaderHolder;
-import main.gis.money.waterinfo.holder.IconTreeItemHolder;
-import main.gis.money.waterinfo.holder.PlaceHolderHolder;
-import main.gis.money.waterinfo.holder.ProfileHolder;
-import main.gis.money.waterinfo.holder.SocialViewHolder;
-import main.gis.money.waterinfo.ui.ContentFragment;
+import io.codetail.animation.SupportAnimator;
+import io.codetail.animation.ViewAnimationUtils;
+import main.gis.money.waterinfo.consts.MenuConst;
+import main.gis.money.waterinfo.ui.MapFragment;
+import main.gis.money.waterinfo.util.TreeUtil;
+import main.gis.money.waterinfo.util.volley.UrlHelper;
+import yalantis.com.sidemenu.interfaces.Resourceble;
+import yalantis.com.sidemenu.interfaces.ScreenShotable;
+import yalantis.com.sidemenu.model.SlideMenuItem;
+import yalantis.com.sidemenu.util.ViewAnimator;
 
-public class MainActivity extends FragmentActivity {
-    private AndroidTreeView tView;
+public class MainActivity extends ActionBarActivity implements ViewAnimator.ViewAnimatorListener {
     /**
      * DrawerLayout
      */
-    private DrawerLayout mDrawerLayout;
+    private DrawerLayout drawerLayout;
+
+    private ActionBarDrawerToggle drawerToggle;
+
     /**
      * 左边栏菜单
      */
-    private ListView mMenuListView;
+    private LinearLayout left_drawer;
+
     /**
      * 右边栏
      */
     private RelativeLayout right_drawer;
+
     /**
-     * 菜单列表
+     * 地图主界面
      */
-    private String[] mMenuTitles;
-    /**
-     * Material Design风格
-     */
-    private MaterialMenuIcon mMaterialMenuIcon;
-    /**
-     * 菜单打开/关闭状态
-     */
-    private boolean isDirection_left = false;
-    /**
-     * 右边栏打开/关闭状态
-     */
-    private boolean isDirection_right = false;
-    private Fragment MapFragment;
-    private View showView;
+    private MapFragment mapFragment;
+
+    private Toolbar toolbar;
+    private ViewAnimator viewAnimator;
+    private List<SlideMenuItem> list = new ArrayList<>();
+    private TreeUtil treeUtil=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mMenuListView = (ListView) findViewById(R.id.left_drawer);
-        right_drawer = (RelativeLayout) findViewById(R.id.right_drawer);
-        this.showView = mMenuListView;
-
+        initViews();
         // 初始化菜单列表
-        mMenuTitles = getResources().getStringArray(R.array.menu_array);
-        mMenuListView.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.drawer_list_item, mMenuTitles));
-        mMenuListView.setOnItemClickListener(new DrawerItemClickListener());
-
-        // 设置抽屉打开时，主要内容区被自定义阴影覆盖
-        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
-                GravityCompat.START);
-        // 设置ActionBar可见，并且切换菜单和内容视图
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
-
-        mMaterialMenuIcon = new MaterialMenuIcon(this, Color.WHITE, MaterialMenuDrawable.Stroke.THIN);
-        mDrawerLayout.setDrawerListener(new DrawerLayoutStateListener());
-
-        if (savedInstanceState == null) {
-            MapFragment = new ContentFragment();
-            //selectItem(0);
-        }
-        initTree(savedInstanceState);
-    }
-
-    private void initTree(Bundle savedInstanceState) {
-        final ViewGroup containerView = (ViewGroup) right_drawer.findViewById(R.id.container);
-
-        final TreeNode root = TreeNode.root();
-
-        TreeNode myProfile = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_person, "My Profile")).setViewHolder(new ProfileHolder(this));
-        TreeNode bruce = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_person, "Bruce Wayne")).setViewHolder(new ProfileHolder(this));
-        TreeNode clark = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_person, "Clark Kent")).setViewHolder(new ProfileHolder(this));
-
-        //TreeNode barry = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_person, "Barry Allen")).setViewHolder(new ProfileHolder(this));
-        addProfileData(myProfile);
-        addProfileData(clark);
-        addProfileData(bruce);
-        //addProfileData(barry);
-        root.addChildren(myProfile, bruce, clark);
-
-        tView = new AndroidTreeView(MainActivity.this, root);
-        tView.setDefaultAnimation(true);
-        tView.setDefaultContainerStyle(R.style.TreeNodeStyleDivided, true);
-        containerView.addView(tView.getView());
-
-        if (savedInstanceState != null) {
-            String state = savedInstanceState.getString("tState");
-            if (!TextUtils.isEmpty(state)) {
-                tView.restoreState(state);
-            }
-        }
-    }
-
-    private void addProfileData(TreeNode profile) {
-        TreeNode socialNetworks = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_people, "Social")).setViewHolder(new HeaderHolder(this));
-        TreeNode places = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_place, "Places")).setViewHolder(new HeaderHolder(this));
-
-        TreeNode facebook = new TreeNode(new SocialViewHolder.SocialItem(R.string.ic_post_facebook)).setViewHolder(new SocialViewHolder(this));
-        TreeNode linkedin = new TreeNode(new SocialViewHolder.SocialItem(R.string.ic_post_linkedin)).setViewHolder(new SocialViewHolder(this));
-        TreeNode google = new TreeNode(new SocialViewHolder.SocialItem(R.string.ic_post_gplus)).setViewHolder(new SocialViewHolder(this));
-        TreeNode twitter = new TreeNode(new SocialViewHolder.SocialItem(R.string.ic_post_twitter)).setViewHolder(new SocialViewHolder(this));
-
-        TreeNode lake = new TreeNode(new PlaceHolderHolder.PlaceItem("A rose garden")).setViewHolder(new PlaceHolderHolder(this));
-        TreeNode mountains = new TreeNode(new PlaceHolderHolder.PlaceItem("The white house")).setViewHolder(new PlaceHolderHolder(this));
-
-        places.addChildren(lake, mountains);
-        socialNetworks.addChildren(facebook, google, twitter, linkedin);
-        profile.addChildren(socialNetworks, places);
+        createMenuList();
+        setActionBar();
+        viewAnimator = new ViewAnimator<>(this, list, mapFragment, drawerLayout, this);
     }
 
     /**
-     * ListView上的Item点击事件
+     * 设置ActionBar可见，并且切换菜单和内容视图
      */
-    private class DrawerItemClickListener implements
-            ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position,
-                                long id) {
-            selectItem(position);
-        }
+    private void setActionBar() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        drawerToggle = new ActionBarDrawerToggle(
+                this,                  /* host Activity */
+                drawerLayout,         /* DrawerLayout object */
+                toolbar,  /* nav drawer icon to replace 'Up' caret */
+                R.string.drawer_open,  /* "open drawer" description */
+                R.string.drawer_close  /* "close drawer" description */
+        ) {
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View drawerView) {
+                left_drawer.removeAllViews();
+                left_drawer.invalidate();
+                super.onDrawerClosed(drawerView);
+            }
+
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                super.onDrawerSlide(drawerView, slideOffset);
+                if (slideOffset > 0.6 && left_drawer.getChildCount() == 0)
+                    viewAnimator.showMenuContent();
+            }
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+            }
+        };
+        drawerLayout.setDrawerListener(drawerToggle);
     }
 
-    /**
-     * DrawerLayout状态变化监听
-     */
-    private class DrawerLayoutStateListener extends
-            DrawerLayout.SimpleDrawerListener {
-        /**
-         * 当导航菜单滑动的时候被执行
-         */
-        @Override
-        public void onDrawerSlide(View drawerView, float slideOffset) {
-            showView = drawerView;
-            if (drawerView == mMenuListView) {// 根据isDirection_left决定执行动画
-                mMaterialMenuIcon.setTransformationOffset(
-                        MaterialMenuDrawable.AnimationState.BURGER_ARROW,
-                        isDirection_left ? 2 - slideOffset : slideOffset);
-            } else if (drawerView == right_drawer) {// 根据isDirection_right决定执行动画
-                mMaterialMenuIcon.setTransformationOffset(
-                        MaterialMenuDrawable.AnimationState.BURGER_ARROW,
-                        isDirection_right ? 2 - slideOffset : slideOffset);
+    private void initViews() {
+        mapFragment = MapFragment.newInstance();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.content_frame, mapFragment)
+                .commit();
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        left_drawer = (LinearLayout) findViewById(R.id.left_drawer);
+        right_drawer = (RelativeLayout) findViewById(R.id.right_drawer);
+        left_drawer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.closeDrawers();
             }
-        }
-
-        /**
-         * 当导航菜单打开时执行
-         */
-        @Override
-        public void onDrawerOpened(android.view.View drawerView) {
-            if (drawerView == mMenuListView) {
-                isDirection_left = true;
-            } else if (drawerView == right_drawer) {
-                isDirection_right = true;
-            }
-        }
-
-        /**
-         * 当导航菜单关闭时执行
-         */
-        @Override
-        public void onDrawerClosed(android.view.View drawerView) {
-            if (drawerView == mMenuListView) {
-                isDirection_left = false;
-            } else if (drawerView == right_drawer) {
-                isDirection_right = false;
-                showView = mMenuListView;
-            }
-        }
+        });
     }
 
-    /**
-     * 切换主视图区域的Fragment
-     *
-     * @param position
-     */
-    private void selectItem(int position) {
-        Bundle args = new Bundle();
-        switch (position) {
-            case 0:
-                args.putString("key", mMenuTitles[position]);
-                break;
-            case 1:
-                args.putString("key", mMenuTitles[position]);
-                break;
-            case 2:
-                args.putString("key", mMenuTitles[position]);
-                break;
-            case 3:
-                args.putString("key", mMenuTitles[position]);
-                break;
+    @Override
+    public ScreenShotable onSwitch(Resourceble slideMenuItem, ScreenShotable screenShotable, int position) {
+        toolbar.setTitle(slideMenuItem.getName());
+        Map<String, Object> params = new HashMap<>();
+        treeUtil=new TreeUtil(MainActivity.this,right_drawer,mapFragment);
+        String url="";
+        switch (slideMenuItem.getName()) {
+            case MenuConst.CLOSE:
+                return screenShotable;
+            case MenuConst.WATER:
+                url= UrlHelper.getWaterUrl(params);
+                treeUtil.getDataFromServer(url,"Water");
+                return setAnimator(screenShotable, position);
+            case MenuConst.RAIN:
+                url = UrlHelper.getRainUrl(params);
+                treeUtil.getDataFromServer(url,"Rain");
+                return setAnimator(screenShotable, position);
+            case MenuConst.FLOOD:
+                url = UrlHelper.getFloodUrl(params);
+                treeUtil.getDataFromServer(url,"Flood");
+                return setAnimator(screenShotable, position);
+            case MenuConst.SOIL:
+                url = UrlHelper.getSoilUrl(params);
+                treeUtil.getDataFromServer(url,"Soil");
+                return setAnimator(screenShotable, position);
             default:
-                break;
+                return screenShotable;
         }
-        MapFragment.setArguments(args); // FragmentActivity将点击的菜单列表标题传递给Fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.content_frame, MapFragment).commit();
+    }
 
-        // 更新选择后的item和title，然后关闭菜单
-        mMenuListView.setItemChecked(position, true);
-        setTitle(mMenuTitles[position]);
-        mDrawerLayout.closeDrawer(mMenuListView);
+    private ScreenShotable setAnimator(ScreenShotable screenShotable, int position) {
+        View view = findViewById(R.id.content_frame);
+        int finalRadius = Math.max(view.getWidth(), view.getHeight());
+        SupportAnimator animator = ViewAnimationUtils.createCircularReveal(view, 0, position, 0, finalRadius);
+        animator.setInterpolator(new AccelerateInterpolator());
+        animator.setDuration(ViewAnimator.CIRCULAR_REVEAL_ANIMATION_DURATION);
+        findViewById(R.id.content_overlay).setBackgroundDrawable(new BitmapDrawable(getResources(), screenShotable.getBitmap()));
+        animator.start();
+        return mapFragment;
+    }
+
+    @Override
+    public void disableHomeButton() {
+        getSupportActionBar().setHomeButtonEnabled(false);
+    }
+
+    @Override
+    public void enableHomeButton() {
+        getSupportActionBar().setHomeButtonEnabled(true);
+        drawerLayout.closeDrawers();
+    }
+
+    @Override
+    public void addViewToContainer(View view) {
+        left_drawer.addView(view);
+    }
+
+    private void createMenuList() {
+        SlideMenuItem menuItem0 = new SlideMenuItem(MenuConst.CLOSE, R.mipmap.icn_close);
+        list.add(menuItem0);
+        SlideMenuItem menuItem = new SlideMenuItem(MenuConst.WATER, R.mipmap.icn_1);
+        list.add(menuItem);
+        SlideMenuItem menuItem2 = new SlideMenuItem(MenuConst.RAIN, R.mipmap.icn_2);
+        list.add(menuItem2);
+        SlideMenuItem menuItem3 = new SlideMenuItem(MenuConst.FLOOD, R.mipmap.icn_3);
+        list.add(menuItem3);
+        SlideMenuItem menuItem4 = new SlideMenuItem(MenuConst.SOIL, R.mipmap.icn_4);
+        list.add(menuItem4);
     }
 
     /**
@@ -240,56 +198,59 @@ public class MainActivity extends FragmentActivity {
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
+        if (drawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+/*        int id = item.getItemId();
         switch (id) {
             case android.R.id.home:
-                if (showView == mMenuListView) {
+                if (showView == left_drawer) {
                     if (!isDirection_left) { // 左边栏菜单关闭时，打开
-                        mDrawerLayout.openDrawer(mMenuListView);
+                        drawerLayout.openDrawer(left_drawer);
                     } else {// 左边栏菜单打开时，关闭
-                        mDrawerLayout.closeDrawer(mMenuListView);
+                        drawerLayout.closeDrawer(left_drawer);
                     }
                 } else if (showView == right_drawer) {
                     if (!isDirection_right) {// 右边栏关闭时，打开
-                        mDrawerLayout.openDrawer(right_drawer);
+                        drawerLayout.openDrawer(right_drawer);
                     } else {// 右边栏打开时，关闭
-                        mDrawerLayout.closeDrawer(right_drawer);
+                        drawerLayout.closeDrawer(right_drawer);
                     }
                 }
                 break;
             case R.id.action_personal:
                 if (!isDirection_right) {// 右边栏关闭时，打开
-                    if (showView == mMenuListView) {
-                        mDrawerLayout.closeDrawer(mMenuListView);
+                    if (showView == left_drawer) {
+                        drawerLayout.closeDrawer(left_drawer);
                     }
-                    mDrawerLayout.openDrawer(right_drawer);
+                    drawerLayout.openDrawer(right_drawer);
                 } else {// 右边栏打开时，关闭
-                    mDrawerLayout.closeDrawer(right_drawer);
+                    drawerLayout.closeDrawer(right_drawer);
                 }
                 break;
             default:
                 break;
-        }
+        }*/
         return super.onOptionsItemSelected(item);
     }
 
     /**
      * 根据onPostCreate回调的状态，还原对应的icon state
+     *
+     * @param savedInstanceState
      */
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        mMaterialMenuIcon.syncState(savedInstanceState);
+        drawerToggle.syncState();
     }
 
-    /**
-     * 根据onSaveInstanceState回调的状态，保存当前icon state
-     */
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        mMaterialMenuIcon.onSaveInstanceState(outState);
-        super.onSaveInstanceState(outState);
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        drawerToggle.onConfigurationChanged(newConfig);
     }
+
 
     /**
      * 加载菜单

@@ -5,4 +5,6 @@
 
     <!-- DrawerLayout -->
     <dimen name="mm_up_arrow_margin">-16dp</dimen>
+
+    <dimen name="sliding_menu_width">80dp</dimen>
 </resources>

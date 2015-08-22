@@ -1,11 +1,10 @@
 package money.gis.bmlibrary;
 
-import android.app.Activity;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 
 import com.baidu.mapapi.map.BaiduMap;
-import com.baidu.mapapi.map.BaiduMapOptions;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
@@ -42,7 +41,7 @@ public class BMap implements IMap {
     }
 
     @Override
-    public BaiduMap InitMap(int id, double lng, double lat, int zoom) {
+    public BaiduMap initMap(int id, double lng, double lat, int zoom) {
 /*        BaiduMapOptions mapOptions = new BaiduMapOptions();
         //设置是否显示缩放控件
         mapOptions.zoomControlsEnabled(false);
@@ -65,8 +64,8 @@ public class BMap implements IMap {
     }
 
     @Override
-    public void AddPoint(double lng, double lat, String key, String name, boolean dragable, boolean isShow, BitmapDescriptor icon) {
-        OverlayOptions marker = GetOverLayByKey(key);
+    public void addPoint(double lng, double lat, String key, String name, boolean dragable, boolean isShow, BitmapDescriptor icon) {
+        OverlayOptions marker = getOverLayByKey(key);
         if (marker != null) {
             return;
         }
@@ -79,12 +78,12 @@ public class BMap implements IMap {
                 .extraInfo(SetBundle(key, name, 0))
                 .icon(icon);
         baiduMap.addOverlay(option);
-        AddLabel(point,key,name,isShow);
+        addLabel(point, key, name, isShow);
     }
 
     @Override
-    public void AddPolyline(String geometry, String name, String key, int color,boolean visible) {
-        OverlayOptions polyline = GetOverLayByKey(key);
+    public void addPolyline(String geometry, String name, String key, int color, boolean visible) {
+        OverlayOptions polyline = getOverLayByKey(key);
         if (polyline != null) {
             return;
         }
@@ -94,12 +93,12 @@ public class BMap implements IMap {
                 .extraInfo(SetBundle(key, name, 1))
                 .color(color);
         baiduMap.addOverlay(polylineOption);
-        AddLabel(points.get(0),key,name,visible);
+        addLabel(points.get(0), key, name, visible);
     }
 
     @Override
-    public void AddPolygon(String geometry, String name, String key,int strokeColor,int fillColor,boolean visible) {
-        OverlayOptions polygon = GetOverLayByKey(key);
+    public void addPolygon(String geometry, String name, String key, int strokeColor, int fillColor, boolean visible) {
+        OverlayOptions polygon = getOverLayByKey(key);
         if (polygon != null) {
             return;
         }
@@ -112,11 +111,11 @@ public class BMap implements IMap {
                 .fillColor(fillColor);
         //在地图上添加多边形Option，用于显示
         baiduMap.addOverlay(polygonOption);
-        AddLabel(points.get(0),key,name,visible);
+        addLabel(points.get(0), key, name, visible);
     }
 
     @Override
-    public void AddLabel(LatLng point,String key,String name,boolean visible) {
+    public void addLabel(LatLng point, String key, String name, boolean visible) {
         OverlayOptions textOption = new TextOptions()
                 .extraInfo(SetBundle(key+"_label",name,-1))
                 .text(name)
@@ -126,12 +125,13 @@ public class BMap implements IMap {
     }
 
     @Override
-    public void SetImageUrl() {
-
+    public void setImageUrl(String key, BitmapDescriptor icon) {
+        MarkerOptions options= (MarkerOptions) this.getOverLayByKey(key);
+        options.icon(icon);
     }
 
     @Override
-    public OverlayOptions GetOverLayByKey(String key) {
+    public OverlayOptions getOverLayByKey(String key) {
         List<OverlayOptions> overlayOptionses = manager.getOverlayOptions();
         for (int i = 0; i < overlayOptionses.size(); i++) {
             try {
@@ -155,7 +155,7 @@ public class BMap implements IMap {
     }
 
     @Override
-    public void SetViewPort(String key) {
+    public void setViewPort(String key) {
 
     }
 

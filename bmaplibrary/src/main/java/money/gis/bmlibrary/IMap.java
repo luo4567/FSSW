@@ -17,7 +17,7 @@ public interface IMap {
      * @param zoom 默认放大级别
      * @return BMap
      */
-    BaiduMap InitMap(int id, double lng, double lat, int zoom);
+    BaiduMap initMap(int id, double lng, double lat, int zoom);
 
     /**
      * 添加点
@@ -29,7 +29,7 @@ public interface IMap {
      * @param isShow 是否显示
      * @param icon 图标
      */
-    void AddPoint(double lng, double lat, String key, String name, boolean dragable, boolean isShow, BitmapDescriptor icon);
+    void addPoint(double lng, double lat, String key, String name, boolean dragable, boolean isShow, BitmapDescriptor icon);
 
     /**
      * 添加线
@@ -38,7 +38,7 @@ public interface IMap {
      * @param key
      * @param color
      */
-    void AddPolyline(String geometry,String name,String key,int color,boolean visible);
+    void addPolyline(String geometry, String name, String key, int color, boolean visible);
 
     /**
      * 添加面
@@ -48,7 +48,7 @@ public interface IMap {
      * @param strokeColor
      * @param fillColor
      */
-    void AddPolygon(String geometry, String name, String key,int strokeColor,int fillColor,boolean visible);
+    void addPolygon(String geometry, String name, String key, int strokeColor, int fillColor, boolean visible);
 
     /**
      * 添加文字标签
@@ -57,19 +57,19 @@ public interface IMap {
      * @param name
      * @param visible
      */
-    void AddLabel(LatLng point,String key,String name,boolean visible);
+    void addLabel(LatLng point, String key, String name, boolean visible);
 
     // 设置点图标
-    void SetImageUrl();
+    void setImageUrl(String key, BitmapDescriptor icon);
 
     /**
      * 根据键值获取覆盖物
      * @param key
      * @return 覆盖物
      */
-    OverlayOptions GetOverLayByKey(String key);
+    OverlayOptions getOverLayByKey(String key);
 
     // 显示覆盖物最佳位置
-    void SetViewPort(String key);
+    void setViewPort(String key);
 
 }

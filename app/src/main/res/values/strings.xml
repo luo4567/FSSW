@@ -11,6 +11,23 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+
+    <string name="close">Close</string>
+    <string name="water">water</string>
+    <string name="rain">rain</string>
+    <string name="flood">flood</string>
+    <string name="soil">soil</string>
+
+    <string name="generic_server_down">网络超时</string>
+    <string name="no_internet">网络链接已断开</string>
+    <string name="generic_error">访问异常</string>
+
+    <string name="on_loading">正在载入&#8230;</string>
+    <string name="on_committing">正在提交&#8230;</string>
+    <string name="load_more">点击加载更多</string>
+    <string name="load_failure">加载失败，点击重试</string>
 
     <string name="ic_access_alarms">&#xe000;</string>
     <string name="ic_access_time">&#xe001;</string>
@@ -439,7 +456,7 @@
     <string name="ic_wb_auto">&#xe1a8;</string>
     <string name="ic_wb_cloudy">&#xe1a9;</string>
     <string name="ic_wb_incandescent">&#xe1aa;</string>
-    <string name="ic_wb_irradescent">&#xe1ab;</string>
+    <string name="ic_wb_irradescent" translatable="false">&#xe1ab;</string>
     <string name="ic_wb_sunny">&#xe1ac;</string>
     <string name="ic_web">&#xe1ad;</string>
     <string name="ic_whatshot">&#xe1ae;</string>

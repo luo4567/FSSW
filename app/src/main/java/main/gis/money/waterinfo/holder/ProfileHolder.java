@@ -27,8 +27,8 @@ public class ProfileHolder extends TreeNode.BaseNodeViewHolder<IconTreeItemHolde
         TextView tvValue = (TextView) view.findViewById(R.id.node_value);
         tvValue.setText(value.text);
 
-//        final PrintView iconView = (PrintView) view.findViewById(R.id.icon);
-//        iconView.setIconText(context.getResources().getString(value.icon));
+        final PrintView iconView = (PrintView) view.findViewById(R.id.icon);
+        iconView.setIconText(context.getResources().getString(value.icon));
 
         return view;
     }
