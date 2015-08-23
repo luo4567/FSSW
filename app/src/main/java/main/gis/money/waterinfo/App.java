@@ -9,7 +9,7 @@ import main.gis.money.waterinfo.util.LogUtil;
 /**
  * Created by Administrator on 2015/8/9.
  */
-public class App extends Application{
+public class App extends Application {
 
     /**
      * 程序运行模式（调试、发布）
@@ -30,15 +30,18 @@ public class App extends Application{
 
     // 应用程序上下文
     private static App instance;
+
     @Override
     public void onCreate() {
         super.onCreate();
         // 在使用 SDK 各组间之前初始化 context 信息，传入 ApplicationContext
         SDKInitializer.initialize(this);
+        instance = this;
     }
 
     /**
      * 静态方法返回程序上下文
+     *
      * @return
      */
     public static synchronized App getContext() {

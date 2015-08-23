@@ -29,7 +29,7 @@ public interface IMap {
      * @param isShow 是否显示
      * @param icon 图标
      */
-    void addPoint(double lng, double lat, String key, String name, boolean dragable, boolean isShow, BitmapDescriptor icon);
+    void addPoint(double lng, double lat, String key, String name, boolean dragable, boolean isShow, BitmapDescriptor icon,int stationType);
 
     /**
      * 添加线

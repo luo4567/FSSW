@@ -2,10 +2,12 @@ package main.gis.money.waterinfo.ui;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +30,7 @@ import main.gis.money.waterinfo.entity.ChartInfo;
 /**
  * Created by Administrator on 2015/8/16.
  */
-public class LineChart extends Fragment {
+public class LineChart extends DialogFragment {
     private LineChartView chart;
     private LineChartData data;
 
@@ -46,7 +48,7 @@ public class LineChart extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         View rootView = inflater.inflate(R.layout.fragment_line_chart, container, false);
 
         chart = (LineChartView) rootView.findViewById(R.id.chart);
@@ -56,8 +58,8 @@ public class LineChart extends Fragment {
 
 
         Bundle bundle = getArguments();
-        ChartInfo chartInfo = (ChartInfo) bundle.get("line");
-        generateData(chartInfo);
+        //ChartInfo chartInfo = (ChartInfo) bundle.get("line");
+        //generateData(chartInfo);
         // Disable viewpirt recalculations, see toggleCubic() method for more info.
         chart.setViewportCalculationEnabled(false);
         return rootView;

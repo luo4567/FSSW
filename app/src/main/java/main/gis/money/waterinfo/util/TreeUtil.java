@@ -54,7 +54,7 @@ public class TreeUtil {
         TreeNode root = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_person, rootName)).setViewHolder(new ProfileHolder(context));
         for (StationInfo stationInfo : stationInfos) {
             TreeNode facebook = new TreeNode(new SocialViewHolder.SocialItem(R.string.ic_post_facebook, stationInfo.getStationName(), stationInfo.getCheckTime(), stationInfo.getCheckValue(), "米")).setViewHolder(new SocialViewHolder(context));
-            myBaiduMap.addPoint(Double.parseDouble(stationInfo.getLongitude()), Double.parseDouble(stationInfo.getLatitude()), stationInfo.getStationCode(), stationInfo.getStationName(), false, false, bitmapDescriptor);
+            myBaiduMap.addPoint(Double.parseDouble(stationInfo.getLongitude()), Double.parseDouble(stationInfo.getLatitude()), stationInfo.getStationCode(), stationInfo.getStationName(), false, false, bitmapDescriptor,121);
             root.addChild(facebook);
         }
         return root;

@@ -1,6 +1,5 @@
 package money.gis.bmlibrary;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 
@@ -17,7 +16,6 @@ import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.map.Stroke;
 import com.baidu.mapapi.map.TextOptions;
 import com.baidu.mapapi.model.LatLng;
-import com.baidu.mapapi.overlayutil.OverlayManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,17 +25,14 @@ import java.util.List;
  */
 public class BMap implements IMap {
 
+    private List<OverlayOptions> overlayOptionses;
     private View activity;
     private BaiduMap baiduMap;
     private MapView mapView = null;
-    private OverlayManager manager;
-
-    public void setManager(OverlayManager manager) {
-        this.manager = manager;
-    }
 
     public BMap(View view) {
         this.activity = view;
+        overlayOptionses = new ArrayList<>();
     }
 
     @Override
@@ -64,7 +59,7 @@ public class BMap implements IMap {
     }
 
     @Override
-    public void addPoint(double lng, double lat, String key, String name, boolean dragable, boolean isShow, BitmapDescriptor icon) {
+    public void addPoint(double lng, double lat, String key, String name, boolean dragable, boolean isShow, BitmapDescriptor icon, int stationType) {
         OverlayOptions marker = getOverLayByKey(key);
         if (marker != null) {
             return;
@@ -75,10 +70,11 @@ public class BMap implements IMap {
                 .title(name)
                 .draggable(dragable)
                 .visible(isShow)
-                .extraInfo(SetBundle(key, name, 0))
+                .extraInfo(SetBundle(key, name, 0, stationType))
                 .icon(icon);
         baiduMap.addOverlay(option);
         addLabel(point, key, name, isShow);
+        overlayOptionses.add(option);
     }
 
     @Override
@@ -90,7 +86,7 @@ public class BMap implements IMap {
         List<LatLng> points = Convert(geometry);
         OverlayOptions polylineOption = new PolylineOptions()
                 .points(points)
-                .extraInfo(SetBundle(key, name, 1))
+                .extraInfo(SetBundle(key, name, 1, 0))
                 .color(color);
         baiduMap.addOverlay(polylineOption);
         addLabel(points.get(0), key, name, visible);
@@ -106,7 +102,7 @@ public class BMap implements IMap {
         List<LatLng> points = Convert(geometry);
         OverlayOptions polygonOption = new PolygonOptions()
                 .points(points)
-                .extraInfo(SetBundle(key, name, 2))
+                .extraInfo(SetBundle(key, name, 2, 0))
                 .stroke(new Stroke(5, strokeColor))
                 .fillColor(fillColor);
         //在地图上添加多边形Option，用于显示
@@ -117,7 +113,7 @@ public class BMap implements IMap {
     @Override
     public void addLabel(LatLng point, String key, String name, boolean visible) {
         OverlayOptions textOption = new TextOptions()
-                .extraInfo(SetBundle(key+"_label",name,-1))
+                .extraInfo(SetBundle(key + "_label", name, -1, 0))
                 .text(name)
                 .position(point)
                 .visible(visible);
@@ -126,13 +122,13 @@ public class BMap implements IMap {
 
     @Override
     public void setImageUrl(String key, BitmapDescriptor icon) {
-        MarkerOptions options= (MarkerOptions) this.getOverLayByKey(key);
+        MarkerOptions options = (MarkerOptions) this.getOverLayByKey(key);
         options.icon(icon);
     }
 
     @Override
     public OverlayOptions getOverLayByKey(String key) {
-        List<OverlayOptions> overlayOptionses = manager.getOverlayOptions();
+        //List<OverlayOptions> overlayOptionses = manager.getOverlayOptions();
         for (int i = 0; i < overlayOptionses.size(); i++) {
             try {
                 OverlayOptions options = overlayOptionses.get(i);
@@ -161,21 +157,24 @@ public class BMap implements IMap {
 
     /**
      * 设置覆盖物的额外信息
+     *
      * @param key
      * @param name
      * @param type
      * @return
      */
-    private Bundle SetBundle(String key, String name, int type) {
+    private Bundle SetBundle(String key, String name, int type, int stationType) {
         Bundle info = new Bundle();
         info.putString("key", key);
         info.putString("name", name);
         info.putInt("type", type);
+        info.putInt("stationType", stationType);
         return info;
     }
 
     /**
      * 将字符串坐标转换成数组坐标
+     *
      * @param geometry
      * @return
      */

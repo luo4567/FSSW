@@ -10,41 +10,24 @@ public class UrlHelper {
 
     public final static String HOST = "http:192.168.1.15:8001";
     public final static String API = "/api/information";
-    public final static String WATERSTATIONS = HOST + API + "/topics";
-    public final static String RainSTATIONS = HOST + API + "/topics";
-    public final static String FloodSTATIONS = HOST + API + "/topics";
-    public final static String SoilSTATIONS = HOST + API + "/topics";
+    public final static String STATIONS = HOST + API + "/topics";
+    public final static String STATIONSHISTORY = HOST + API + "/GetHisotry";
 
     /**
      * 水情站点列表url
      * @param params 参数
      */
-    public static String getWaterUrl(Map<String, Object> params){
-        return resolve(WATERSTATIONS, params);
+    public static String getStationsUrl(Map<String, Object> params){
+        return resolve(STATIONS, params);
     }
 
     /**
-     * 雨情站点列表url
-     * @param params 参数
+     * 获取站点历史信息
+     * @param params
+     * @return
      */
-    public static String getRainUrl(Map<String, Object> params){
-        return resolve(RainSTATIONS, params);
-    }
-
-    /**
-     * 涝情站点列表url
-     * @param params 参数
-     */
-    public static String getFloodUrl(Map<String, Object> params){
-        return resolve(FloodSTATIONS, params);
-    }
-
-    /**
-     * 熵情站点列表url
-     * @param params 参数
-     */
-    public static String getSoilUrl(Map<String, Object> params){
-        return resolve(SoilSTATIONS, params);
+    public static String getStationHistoryUrl(Map<String, Object> params){
+        return resolve(STATIONSHISTORY, params);
     }
 
     //拼接url路径

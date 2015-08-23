@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -132,24 +131,11 @@ public class MainActivity extends ActionBarActivity implements ViewAnimator.View
         switch (slideMenuItem.getName()) {
             case MenuConst.CLOSE:
                 return screenShotable;
-            case MenuConst.WATER:
-                url= UrlHelper.getWaterUrl(params);
-                treeUtil.getDataFromServer(url,"Water");
-                return setAnimator(screenShotable, position);
-            case MenuConst.RAIN:
-                url = UrlHelper.getRainUrl(params);
-                treeUtil.getDataFromServer(url,"Rain");
-                return setAnimator(screenShotable, position);
-            case MenuConst.FLOOD:
-                url = UrlHelper.getFloodUrl(params);
-                treeUtil.getDataFromServer(url,"Flood");
-                return setAnimator(screenShotable, position);
-            case MenuConst.SOIL:
-                url = UrlHelper.getSoilUrl(params);
-                treeUtil.getDataFromServer(url,"Soil");
-                return setAnimator(screenShotable, position);
             default:
-                return screenShotable;
+                params.put("stationType",position);
+                url= UrlHelper.getStationsUrl(params);
+                treeUtil.getDataFromServer(url,"Stations");
+                return setAnimator(screenShotable, position);
         }
     }
 
@@ -250,7 +236,6 @@ public class MainActivity extends ActionBarActivity implements ViewAnimator.View
         super.onConfigurationChanged(newConfig);
         drawerToggle.onConfigurationChanged(newConfig);
     }
-
 
     /**
      * 加载菜单
