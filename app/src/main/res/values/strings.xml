@@ -7,6 +7,10 @@
         <item>涝情</item>
         <item>熵情</item>
     </string-array>
+
+    <string name="check_time">时间</string>
+    <string name="check_value">水位(米)</string>
+
     <string name="action_personal">个人中心</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>

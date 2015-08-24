@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +27,9 @@ import lecho.lib.hellocharts.view.Chart;
 import lecho.lib.hellocharts.view.LineChartView;
 import main.gis.money.waterinfo.R;
 import main.gis.money.waterinfo.entity.ChartInfo;
+import main.gis.money.waterinfo.entity.StationHistory;
+import main.gis.money.waterinfo.holder.ListCommAdapter;
+import main.gis.money.waterinfo.holder.MyAdapterWithCommViewHolder;
 
 /**
  * Created by Administrator on 2015/8/16.
@@ -46,6 +50,11 @@ public class LineChart extends DialogFragment {
     private TextView title;
     private TextView subTitle;
 
+    private ListView mListView;
+    private List<StationHistory> mDatas;
+    private MyAdapterWithCommViewHolder mAdapterWithCommViewHolder;
+    private ListCommAdapter mAdapterWithCommAdapter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -56,6 +65,8 @@ public class LineChart extends DialogFragment {
         subTitle = (TextView) rootView.findViewById(R.id.subTitle);
         chart.setOnValueTouchListener(new ValueTouchListener());
 
+        initDatas();
+        initView(rootView);
 
         Bundle bundle = getArguments();
         //ChartInfo chartInfo = (ChartInfo) bundle.get("line");
@@ -63,6 +74,61 @@ public class LineChart extends DialogFragment {
         // Disable viewpirt recalculations, see toggleCubic() method for more info.
         chart.setViewportCalculationEnabled(false);
         return rootView;
+    }
+
+    /**
+     * 初始化数据和适配器
+     * @return void
+     * @author Yann
+     * @date 2015-8-5 下午10:15:03
+     */
+    private void initDatas()
+    {
+        mDatas = new ArrayList<StationHistory>();
+        StationHistory bean = new StationHistory("2015-08-05", 10086);
+        mDatas.add(bean);
+        bean = new StationHistory("2015-08-06", 10086);
+        mDatas.add(bean);
+        bean = new StationHistory("2015-08-07", 10086);
+        mDatas.add(bean);
+        bean = new StationHistory("2015-08-08", 10086);
+        mDatas.add(bean);
+        bean = new StationHistory("2015-08-09", 10086);
+        mDatas.add(bean);
+
+        bean = new StationHistory("2015-08-10", 10086);
+        mDatas.add(bean);
+        bean = new StationHistory("2015-08-11", 10086);
+        mDatas.add(bean);
+        bean = new StationHistory("2015-08-12", 10086);
+        mDatas.add(bean);
+        bean = new StationHistory("2015-08-13", 10086);
+        mDatas.add(bean);
+
+        bean = new StationHistory("2015-08-14", 10086);
+        mDatas.add(bean);
+        bean = new StationHistory("2015-08-15", 10086);
+        mDatas.add(bean);
+        bean = new StationHistory("2015-08-16", 10086);
+        mDatas.add(bean);
+        bean = new StationHistory("2015-08-17", 10086);
+        mDatas.add(bean);
+
+        mAdapterWithCommViewHolder = new MyAdapterWithCommViewHolder(getActivity(), mDatas, R.layout.listview_data_item);
+        mAdapterWithCommAdapter = new ListCommAdapter(getActivity(), mDatas, R.layout.listview_data_item);
+    }
+
+    /**
+     * 为列表设置适配器
+     * @return void
+     * @author Yann
+     * @date 2015-8-5 下午10:15:04
+     */
+    private void initView(View inflater)
+    {
+        mListView = (ListView)inflater.findViewById(R.id.data);
+//		mListView.setAdapter(mAdapterWithCommViewHolder);
+        mListView.setAdapter(mAdapterWithCommAdapter);
     }
 
     private void generateData(ChartInfo chartInfo) {

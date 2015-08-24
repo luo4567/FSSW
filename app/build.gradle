@@ -48,4 +48,5 @@ dependencies {
     compile project(':bmaplibrary')
     compile project(':treelibrary')
     compile project(':slidelibrary')
+    compile project(':baseadapter')
 }

@@ -1,1 +1,1 @@
-include ':app','bmaplibrary','treelibrary','slidelibrary'
+include ':app', ':baseadapter','bmaplibrary','treelibrary','slidelibrary'

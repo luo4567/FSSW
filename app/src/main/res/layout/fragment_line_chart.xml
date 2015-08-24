@@ -37,18 +37,36 @@
 
     <TextView
         android:id="@+id/dataTitle"
-        android:layout_margin="15dp"
-        android:text="水位报表"
-        android:textSize="20sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/chart"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_margin="15dp"
+        android:text="水位报表"
+        android:textSize="20sp" />
 
+    <LinearLayout
+        android:id="@+id/data_linear"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dataTitle"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/check_time" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/check_value" />
+    </LinearLayout>
     <ListView
         android:id="@+id/data"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@id/dataTitle">
-    </ListView>
+        android:layout_below="@id/data_linear"></ListView>
 </RelativeLayout>
