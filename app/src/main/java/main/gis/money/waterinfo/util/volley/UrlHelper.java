@@ -10,32 +10,35 @@ public class UrlHelper {
 
     public final static String HOST = "http:192.168.1.15:8001";
     public final static String API = "/api/information";
-    public final static String STATIONS = HOST + API + "/topics";
-    public final static String STATIONSHISTORY = HOST + API + "/GetHisotry";
+    public final static String REGIONLIST = HOST + API + "/";
+    public final static String STATIONS = HOST + API + "/getStation";
+    public final static String STATIONS_HISTORY = HOST + API + "/getHistory";
 
     /**
      * 水情站点列表url
+     *
      * @param params 参数
      */
-    public static String getStationsUrl(Map<String, Object> params){
+    public static String getStationsUrl(Map<String, Object> params) {
         return resolve(STATIONS, params);
     }
 
     /**
      * 获取站点历史信息
+     *
      * @param params
      * @return
      */
-    public static String getStationHistoryUrl(Map<String, Object> params){
-        return resolve(STATIONSHISTORY, params);
+    public static String getStationHistoryUrl(Map<String, Object> params) {
+        return resolve(STATIONS_HISTORY, params);
     }
 
     //拼接url路径
-    public static String resolve(String host, String path){
+    public static String resolve(String host, String path) {
         StringBuilder builder = new StringBuilder(host);
-        if (path.startsWith("/")&&host.endsWith("/")){
+        if (path.startsWith("/") && host.endsWith("/")) {
             path = path.substring(1);
-        } else if (!path.startsWith("/")&&!host.endsWith("/")){
+        } else if (!path.startsWith("/") && !host.endsWith("/")) {
             builder.append("/");
         }
         builder.append(path);
@@ -43,12 +46,12 @@ public class UrlHelper {
     }
 
     //拼接参数
-    public static String resolve(String host, Map<String, Object> params){
+    public static String resolve(String host, Map<String, Object> params) {
         StringBuilder builder = new StringBuilder(host);
-        if (!params.isEmpty()){
+        if (!params.isEmpty()) {
             builder.append("?");
-            for (String key:params.keySet()){
-                if (!builder.toString().endsWith("?")){
+            for (String key : params.keySet()) {
+                if (!builder.toString().endsWith("?")) {
                     builder.append("&");
                 }
                 builder.append(key);
