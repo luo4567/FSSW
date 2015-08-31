@@ -8,11 +8,12 @@ import java.util.Map;
  */
 public class UrlHelper {
 
-    public final static String HOST = "http:192.168.1.15:8001";
-    public final static String API = "/api/information";
-    public final static String REGIONLIST = HOST + API + "/";
-    public final static String STATIONS = HOST + API + "/getStation";
-    public final static String STATIONS_HISTORY = HOST + API + "/getHistory";
+    public final static String HOST = "http:192.168.1.92:8001";
+    public final static String API = "/api/StationInfo";
+    public final static String START_IMAGE = HOST + API + "/GetStartImage";
+    public final static String REGION = HOST + API + "/GetCityList";
+    public final static String STATIONS = HOST + API + "/GetStationInfo";
+    public final static String STATIONS_HISTORY = HOST + API + "/GetStationHistory";
 
     /**
      * 水情站点列表url

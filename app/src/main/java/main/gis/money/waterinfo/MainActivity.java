@@ -6,13 +6,20 @@ import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,9 +29,12 @@ import java.util.Map;
 import io.codetail.animation.SupportAnimator;
 import io.codetail.animation.ViewAnimationUtils;
 import main.gis.money.waterinfo.consts.MenuConst;
+import main.gis.money.waterinfo.entity.Region;
 import main.gis.money.waterinfo.ui.MapFragment;
+import main.gis.money.waterinfo.util.GJsonHelper;
 import main.gis.money.waterinfo.util.TreeUtil;
 import main.gis.money.waterinfo.util.volley.UrlHelper;
+import main.gis.money.waterinfo.util.volley.VolleyHelper;
 import yalantis.com.sidemenu.interfaces.Resourceble;
 import yalantis.com.sidemenu.interfaces.ScreenShotable;
 import yalantis.com.sidemenu.model.SlideMenuItem;
@@ -56,7 +66,7 @@ public class MainActivity extends ActionBarActivity implements ViewAnimator.View
     private Toolbar toolbar;
     private ViewAnimator viewAnimator;
     private List<SlideMenuItem> list = new ArrayList<>();
-    private TreeUtil treeUtil=null;
+    private TreeUtil treeUtil = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +77,33 @@ public class MainActivity extends ActionBarActivity implements ViewAnimator.View
         createMenuList();
         setActionBar();
         viewAnimator = new ViewAnimator<>(this, list, mapFragment, drawerLayout, this);
+        initDatas();
+    }
+
+    /**
+     * 初始化数据
+     */
+    private void initDatas() {
+        //1.获取区域信息数据
+        StringRequest request = new StringRequest(Request.Method.GET, UrlHelper.REGION, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if (TextUtils.isEmpty(response)) {
+                    return;
+                }
+                List<Region> regions = GJsonHelper.getObjects(response, Region.class);
+                for (Region region : regions) {
+                    region.getCityName();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        VolleyHelper.addToRequestQueue(request);
+        // 2.获取水情数据
     }
 
     /**
@@ -126,15 +163,15 @@ public class MainActivity extends ActionBarActivity implements ViewAnimator.View
     public ScreenShotable onSwitch(Resourceble slideMenuItem, ScreenShotable screenShotable, int position) {
         toolbar.setTitle(slideMenuItem.getName());
         Map<String, Object> params = new HashMap<>();
-        treeUtil=new TreeUtil(MainActivity.this,right_drawer,mapFragment);
-        String url="";
+        treeUtil = new TreeUtil(MainActivity.this, right_drawer, mapFragment);
+        String url = "";
         switch (slideMenuItem.getName()) {
             case MenuConst.CLOSE:
                 return screenShotable;
             default:
-                params.put("stationType",position);
-                url= UrlHelper.getStationsUrl(params);
-                treeUtil.getDataFromServer(url,"Stations");
+                params.put("stationType", position);
+                url = UrlHelper.getStationsUrl(params);
+                treeUtil.getDataFromServer(url, "Stations");
                 return setAnimator(screenShotable, position);
         }
     }

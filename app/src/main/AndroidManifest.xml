@@ -20,7 +20,16 @@
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="WKWwAr2XTye9n8p1vG8tQGG9" />
         <activity
-            android:name="main.gis.money.waterinfo.MainActivity"
+            android:name=".ui.activity.SplashActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
