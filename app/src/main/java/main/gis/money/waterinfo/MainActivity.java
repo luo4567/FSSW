@@ -163,13 +163,17 @@ public class MainActivity extends ActionBarActivity implements ViewAnimator.View
     public ScreenShotable onSwitch(Resourceble slideMenuItem, ScreenShotable screenShotable, int position) {
         toolbar.setTitle(slideMenuItem.getName());
         Map<String, Object> params = new HashMap<>();
+        params.put("type", position);
+        params.put("cityId",null);
         treeUtil = new TreeUtil(MainActivity.this, right_drawer, mapFragment);
         String url = "";
         switch (slideMenuItem.getName()) {
             case MenuConst.CLOSE:
                 return screenShotable;
+            case MenuConst.RAIN:
+                params.put("yuqingType",0);
             default:
-                params.put("stationType", position);
+
                 url = UrlHelper.getStationsUrl(params);
                 treeUtil.getDataFromServer(url, "Stations");
                 return setAnimator(screenShotable, position);
