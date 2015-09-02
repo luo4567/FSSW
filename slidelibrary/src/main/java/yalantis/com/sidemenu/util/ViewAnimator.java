@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +60,9 @@ public class ViewAnimator<T extends Resourceble> {
                 }
             });
             ((ImageView) viewMenu.findViewById(R.id.menu_item_image)).setImageResource(list.get(i).getImageRes());
+            if(list.get(i).getName()!="Close"){
+                ((TextView) viewMenu.findViewById(R.id.menu_item_text)).setText(list.get(i).getName());
+            }
             viewMenu.setVisibility(View.GONE);
             viewMenu.setEnabled(false);
             viewList.add(viewMenu);

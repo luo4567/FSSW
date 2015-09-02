@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="im_icon" format="reference"></attr>
+    <attr name="im_color" format="color"></attr>
+    <attr name="im_text" format="string"></attr>
+    <attr name="im_text_size" format="dimension"></attr>
+
+    <declare-styleable name="ChangeColorIconWithText">
+        <attr name="im_icon"></attr>
+        <attr name="im_color"></attr>
+        <attr name="im_text"></attr>
+        <attr name="im_text_size"></attr>
+    </declare-styleable>
+
+</resources>

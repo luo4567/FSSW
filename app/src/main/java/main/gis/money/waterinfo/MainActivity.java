@@ -161,7 +161,9 @@ public class MainActivity extends ActionBarActivity implements ViewAnimator.View
 
     @Override
     public ScreenShotable onSwitch(Resourceble slideMenuItem, ScreenShotable screenShotable, int position) {
-        toolbar.setTitle(slideMenuItem.getName());
+        if(slideMenuItem.getName()!="Close"){
+            toolbar.setTitle(slideMenuItem.getName());
+        }
         Map<String, Object> params = new HashMap<>();
         params.put("type", position);
         params.put("cityId",null);
@@ -210,13 +212,13 @@ public class MainActivity extends ActionBarActivity implements ViewAnimator.View
     private void createMenuList() {
         SlideMenuItem menuItem0 = new SlideMenuItem(MenuConst.CLOSE, R.mipmap.icn_close);
         list.add(menuItem0);
-        SlideMenuItem menuItem = new SlideMenuItem(MenuConst.WATER, R.mipmap.icn_1);
+        SlideMenuItem menuItem = new SlideMenuItem(MenuConst.WATER, R.mipmap.m3);
         list.add(menuItem);
-        SlideMenuItem menuItem2 = new SlideMenuItem(MenuConst.RAIN, R.mipmap.icn_2);
+        SlideMenuItem menuItem2 = new SlideMenuItem(MenuConst.RAIN, R.mipmap.m4);
         list.add(menuItem2);
-        SlideMenuItem menuItem3 = new SlideMenuItem(MenuConst.FLOOD, R.mipmap.icn_3);
+        SlideMenuItem menuItem3 = new SlideMenuItem(MenuConst.FLOOD, R.mipmap.m1);
         list.add(menuItem3);
-        SlideMenuItem menuItem4 = new SlideMenuItem(MenuConst.SOIL, R.mipmap.icn_4);
+        SlideMenuItem menuItem4 = new SlideMenuItem(MenuConst.SOIL, R.mipmap.m2);
         list.add(menuItem4);
     }
 
