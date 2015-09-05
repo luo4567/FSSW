@@ -7,6 +7,8 @@
       <module fileurl="file://$PROJECT_DIR$/baseadapter/baseadapter.iml" filepath="$PROJECT_DIR$/baseadapter/baseadapter.iml" />
       <module fileurl="file://$PROJECT_DIR$/bmaplibrary/bmaplibrary.iml" filepath="$PROJECT_DIR$/bmaplibrary/bmaplibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/slidelibrary/slidelibrary.iml" filepath="$PROJECT_DIR$/slidelibrary/slidelibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spinnerlibrary/spinnerlibrary.iml" filepath="$PROJECT_DIR$/spinnerlibrary/spinnerlibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/togglebuttonlibrary/togglebuttonlibrary.iml" filepath="$PROJECT_DIR$/togglebuttonlibrary/togglebuttonlibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/treelibrary/treelibrary.iml" filepath="$PROJECT_DIR$/treelibrary/treelibrary.iml" />
     </modules>
   </component>

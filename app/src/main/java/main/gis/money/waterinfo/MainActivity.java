@@ -6,7 +6,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -30,7 +29,8 @@ import io.codetail.animation.SupportAnimator;
 import io.codetail.animation.ViewAnimationUtils;
 import main.gis.money.waterinfo.consts.MenuConst;
 import main.gis.money.waterinfo.entity.Region;
-import main.gis.money.waterinfo.ui.MapFragment;
+import main.gis.money.waterinfo.ui.Fragment.ConditionFragment;
+import main.gis.money.waterinfo.ui.Fragment.MapFragment;
 import main.gis.money.waterinfo.util.GJsonHelper;
 import main.gis.money.waterinfo.util.TreeUtil;
 import main.gis.money.waterinfo.util.volley.UrlHelper;
@@ -57,6 +57,8 @@ public class MainActivity extends ActionBarActivity implements ViewAnimator.View
      * 右边栏
      */
     private RelativeLayout right_drawer;
+
+    private LinearLayout tree_layout;
 
     /**
      * 地图主界面
@@ -104,6 +106,10 @@ public class MainActivity extends ActionBarActivity implements ViewAnimator.View
         });
         VolleyHelper.addToRequestQueue(request);
         // 2.获取水情数据
+        ConditionFragment fragment=new ConditionFragment();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.layout_condition, fragment)
+                .commit();
     }
 
     /**
@@ -111,6 +117,7 @@ public class MainActivity extends ActionBarActivity implements ViewAnimator.View
      */
     private void setActionBar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.AppTitle);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -151,6 +158,7 @@ public class MainActivity extends ActionBarActivity implements ViewAnimator.View
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         left_drawer = (LinearLayout) findViewById(R.id.left_drawer);
         right_drawer = (RelativeLayout) findViewById(R.id.right_drawer);
+        tree_layout=(LinearLayout)findViewById(R.id.treeView);
         left_drawer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -167,7 +175,7 @@ public class MainActivity extends ActionBarActivity implements ViewAnimator.View
         Map<String, Object> params = new HashMap<>();
         params.put("type", position);
         params.put("cityId",null);
-        treeUtil = new TreeUtil(MainActivity.this, right_drawer, mapFragment);
+        treeUtil = new TreeUtil(MainActivity.this, tree_layout, mapFragment);
         String url = "";
         switch (slideMenuItem.getName()) {
             case MenuConst.CLOSE:

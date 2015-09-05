@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="ImageCheckableButton">
+        <attr name="buttonChecked" format="boolean" />
+        <attr name="buttonPaddingLeft" format="dimension" />
+        <attr name="buttonDrawable" format="reference" />
+        <attr name="buttonDrawableWidth" format="dimension" />
+        <attr name="buttonDrawableHeight" format="dimension" />
+        <attr name="imagePaddingLeft" format="dimension" />
+        <attr name="imageDrawable" format="reference" />
+        <attr name="imageDrawableWidth" format="dimension" />
+        <attr name="imageDrawableHeight" format="dimension" />
+    </declare-styleable>
+    <declare-styleable name="CheckBoxGroup">
+        <attr name="checkedButton" format="integer" />
+        <attr name="groupOrientation" format="integer" />
+    </declare-styleable>
+
+</resources>

@@ -2,7 +2,7 @@ package main.gis.money.waterinfo.util;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -27,7 +27,7 @@ import main.gis.money.waterinfo.entity.Stations;
 import main.gis.money.waterinfo.holder.IconTreeItemHolder;
 import main.gis.money.waterinfo.holder.ProfileHolder;
 import main.gis.money.waterinfo.holder.SocialViewHolder;
-import main.gis.money.waterinfo.ui.MapFragment;
+import main.gis.money.waterinfo.ui.Fragment.MapFragment;
 import main.gis.money.waterinfo.util.volley.DateTypeAdapter;
 import main.gis.money.waterinfo.util.volley.VolleyErrorHelper;
 import main.gis.money.waterinfo.util.volley.VolleyHelper;
@@ -39,14 +39,14 @@ import money.gis.bmlibrary.BMap;
 public class TreeUtil {
     private AndroidTreeView treeView;
     private Context context;
-    private RelativeLayout right_drawer;
+    private LinearLayout treeLayout;
     private BMap myBaiduMap;
     BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory
             .fromResource(R.drawable.icon_gcoding);
 
-    public TreeUtil(Context context, RelativeLayout right_drawer, MapFragment mapFragment) {
+    public TreeUtil(Context context, LinearLayout treeLayout, MapFragment mapFragment) {
         this.context = context;
-        this.right_drawer = right_drawer;
+        this.treeLayout = treeLayout;
         myBaiduMap = mapFragment.getMyBaiduMap();
     }
 
@@ -75,7 +75,7 @@ public class TreeUtil {
                 treeView = new AndroidTreeView(context, root);
                 treeView.setDefaultAnimation(true);
                 treeView.setDefaultContainerStyle(R.style.TreeNodeStyleDivided, true);
-                right_drawer.addView(treeView.getView());
+                treeLayout.addView(treeView.getView());
                 // TODO: 2015/8/18 保存到数据库
             }
         }, new Response.ErrorListener() {

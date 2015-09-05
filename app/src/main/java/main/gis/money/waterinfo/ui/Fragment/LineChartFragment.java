@@ -1,7 +1,8 @@
-package main.gis.money.waterinfo.ui;
+package main.gis.money.waterinfo.ui.Fragment;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -34,7 +35,7 @@ import main.gis.money.waterinfo.holder.MyAdapterWithCommViewHolder;
 /**
  * Created by Administrator on 2015/8/16.
  */
-public class LineChart extends DialogFragment {
+public class LineChartFragment extends Fragment {
     private LineChartView chart;
     private LineChartData data;
 
@@ -55,9 +56,10 @@ public class LineChart extends DialogFragment {
     private MyAdapterWithCommViewHolder mAdapterWithCommViewHolder;
     private ListCommAdapter mAdapterWithCommAdapter;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+
         View rootView = inflater.inflate(R.layout.fragment_line_chart, container, false);
 
         chart = (LineChartView) rootView.findViewById(R.id.chart);
@@ -66,7 +68,7 @@ public class LineChart extends DialogFragment {
         chart.setOnValueTouchListener(new ValueTouchListener());
 
         initDatas();
-        initView(rootView);
+        //initView(rootView);
 
         Bundle bundle = getArguments();
         //ChartInfo chartInfo = (ChartInfo) bundle.get("line");
@@ -118,18 +120,18 @@ public class LineChart extends DialogFragment {
         mAdapterWithCommAdapter = new ListCommAdapter(getActivity(), mDatas, R.layout.listview_data_item);
     }
 
-    /**
+/*    *//**
      * 为列表设置适配器
      * @return void
      * @author Yann
      * @date 2015-8-5 下午10:15:04
-     */
+     *//*
     private void initView(View inflater)
     {
         mListView = (ListView)inflater.findViewById(R.id.data);
 //		mListView.setAdapter(mAdapterWithCommViewHolder);
         mListView.setAdapter(mAdapterWithCommAdapter);
-    }
+    }*/
 
     private void generateData(ChartInfo chartInfo) {
         title.setText(chartInfo.getTitle());

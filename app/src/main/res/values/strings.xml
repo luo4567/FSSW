@@ -8,6 +8,12 @@
         <item>熵情</item>
     </string-array>
 
+    <string-array name="sq_condition_array">
+        <item>水位超警/汛限共{0}站</item>
+        <item>最近24小时发布水文预测共{0}站</item>
+        <item>最近24小时发布水情预警信号共{0}站</item>
+    </string-array>
+
     <string name="check_time">时间</string>
     <string name="check_value">水位(米)</string>
 
@@ -23,6 +29,18 @@
     <string name="rain">rain</string>
     <string name="flood">flood</string>
     <string name="soil">soil</string>
+
+    <string name="AppTitle">广东省水文局佛山水文分局</string>
+    <string name="lineTitle">水位过程线</string>
+    <string name="report_list">水位报表</string>
+    <string name="station_info">站点信息</string>
+    <string name="station_name">站点名称</string>
+    <string name="station_desc">站点介绍</string>
+
+    <string name="info_condition">条件选择</string>
+    <string name="info_title">雨情信息</string>
+
+    <string name="normal">地图</string>
 
     <string name="generic_server_down">网络超时</string>
     <string name="no_internet">网络链接已断开</string>

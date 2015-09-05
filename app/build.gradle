@@ -44,10 +44,13 @@ dependencies {
     compile 'com.github.lecho:hellocharts-android:v1.5.6'
     compile 'com.mcxiaoke.volley:library:1.0.18'
     compile 'com.loopj.android:android-async-http:1.4.8'
+    compile 'com.github.manuelpeinado.multichoiceadapter:multichoiceadapter:3.0.0'
     //json解析
     compile 'com.google.code.gson:gson:2.3.1'
     compile project(':bmaplibrary')
     compile project(':treelibrary')
     compile project(':slidelibrary')
     compile project(':baseadapter')
+    compile project(':togglebuttonlibrary')
+    compile project(':spinnerlibrary')
 }

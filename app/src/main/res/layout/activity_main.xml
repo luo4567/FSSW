@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <io.codetail.widget.RevealFrameLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <io.codetail.widget.RevealFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/container_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -47,10 +46,64 @@
             android:orientation="vertical"></LinearLayout>
     </ScrollView>
 
+    <!--    <ScrollView
+            android:id="@+id/right_scrollView"
+            android:layout_width="@dimen/sliding_right_width"
+            android:layout_height="fill_parent"
+            android:layout_gravity="end">-->
+
     <RelativeLayout
         android:id="@+id/right_drawer"
-        android:layout_width="280dp"
-        android:layout_height="match_parent"
+        android:layout_width="@dimen/sliding_right_width"
+        android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:background="#ffffffff"></RelativeLayout>
+        android:background="#ffffffff">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/info_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="@style/MyActionBar" />
+
+        <TextView
+            android:id="@+id/tv_info_condition"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/info_toolbar"
+            android:background="@color/info_background"
+            android:gravity="start"
+            android:padding="5dp"
+
+            android:text="@string/info_condition"
+            android:textColor="@android:color/holo_blue_dark"
+            android:textSize="18sp" />
+
+        <FrameLayout
+            android:id="@+id/layout_condition"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_info_condition"></FrameLayout>
+
+        <TextView
+            android:id="@+id/tv_info_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/layout_condition"
+            android:background="@color/info_background"
+            android:gravity="start"
+            android:padding="5dp"
+            android:text="@string/info_title"
+            android:textColor="@android:color/holo_blue_dark"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:id="@+id/treeView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@id/tv_info_title"
+            android:orientation="vertical"></LinearLayout>
+    </RelativeLayout>
+    <!--    </ScrollView>-->
 </android.support.v4.widget.DrawerLayout>

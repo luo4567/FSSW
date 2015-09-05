@@ -8,34 +8,15 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="lecho.lib.hellocharts.samples.LineChartActivity$PlaceholderFragment">
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:text="马口水位过程线"
-        android:textSize="20sp" />
-
-    <TextView
-        android:id="@+id/subTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/title"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="10sp"
-        android:text="2015-8-20 15时至21日16时"
-        android:textSize="15sp" />
-
     <lecho.lib.hellocharts.view.LineChartView
         android:id="@+id/chart"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/subTitle"></lecho.lib.hellocharts.view.LineChartView>
 
-    <TextView
+<!--    <TextView
         android:id="@+id/dataTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -60,13 +41,14 @@
 
         <TextView
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/check_value" />
     </LinearLayout>
+
     <ListView
         android:id="@+id/data"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@id/data_linear"></ListView>
+        android:layout_below="@id/data_linear"></ListView>-->
 </RelativeLayout>
