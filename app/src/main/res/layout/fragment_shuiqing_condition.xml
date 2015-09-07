@@ -4,8 +4,82 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ListView
-        android:id="@+id/sq_condition"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"></ListView>
+    <TextView
+        android:id="@+id/tv_info_condition"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/info_toolbar"
+        android:background="@color/info_background"
+        android:gravity="start"
+        android:padding="5dp"
+
+        android:text="@string/info_condition"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textSize="18sp" />
+
+    <RelativeLayout
+        android:id="@+id/layout_condition"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/chaojing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:text="@string/chaojing"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/yuce"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/chaojing"
+            android:layout_marginLeft="15dp"
+            android:text="@string/yuce"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/yujing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/yuce"
+            android:layout_margin="15dp"
+            android:text="@string/yujing"
+            android:textSize="16sp" />
+
+        <CheckBox
+            android:id="@+id/ck_yubao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp" />
+
+        <CheckBox
+            android:id="@+id/ck_yuce"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/yuce"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp" />
+
+        <CheckBox
+            android:id="@+id/ck_yujing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/yujing"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_info_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/info_background"
+        android:gravity="start"
+        android:padding="5dp"
+        android:text="@string/info_title"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textSize="18sp" />
 </LinearLayout>

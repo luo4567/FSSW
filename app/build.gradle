@@ -6,7 +6,7 @@ repositories {
 }
 android {
     compileSdkVersion 21
-    buildToolsVersion "23.0.0 rc2"
+    buildToolsVersion "23.0.0"
 
     defaultConfig {
         applicationId "main.gis.money.waterinfo"
@@ -52,5 +52,4 @@ dependencies {
     compile project(':slidelibrary')
     compile project(':baseadapter')
     compile project(':togglebuttonlibrary')
-    compile project(':spinnerlibrary')
 }

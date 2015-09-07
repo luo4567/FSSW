@@ -8,7 +8,7 @@ import java.util.Map;
  */
 public class UrlHelper {
 
-    public final static String HOST = "http:192.168.1.92:8001";
+    public final static String HOST = "http://192.168.88.1:8001";
     public final static String API = "/api/StationInfo";
     public final static String START_IMAGE = HOST + API + "/GetStartImage";
     public final static String REGION = HOST + API + "/GetCityList";

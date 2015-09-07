@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 import main.gis.money.waterinfo.App;
+import main.gis.money.waterinfo.MainActivity;
 import main.gis.money.waterinfo.R;
 import main.gis.money.waterinfo.entity.StationInfo;
 import main.gis.money.waterinfo.entity.Stations;
@@ -38,15 +39,15 @@ import money.gis.bmlibrary.BMap;
  */
 public class TreeUtil {
     private AndroidTreeView treeView;
-    private Context context;
+    private MainActivity context;
     private LinearLayout treeLayout;
     private BMap myBaiduMap;
     BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory
             .fromResource(R.drawable.icon_gcoding);
 
-    public TreeUtil(Context context, LinearLayout treeLayout, MapFragment mapFragment) {
+    public TreeUtil(MainActivity context, MapFragment mapFragment) {
         this.context = context;
-        this.treeLayout = treeLayout;
+        this.treeLayout = (LinearLayout)context.findViewById(R.id.treeView);;
         myBaiduMap = mapFragment.getMyBaiduMap();
     }
 

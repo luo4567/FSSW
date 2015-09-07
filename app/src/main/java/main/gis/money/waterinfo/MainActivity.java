@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.ArrayMap;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,6 +42,9 @@ import yalantis.com.sidemenu.model.SlideMenuItem;
 import yalantis.com.sidemenu.util.ViewAnimator;
 
 public class MainActivity extends ActionBarActivity implements ViewAnimator.ViewAnimatorListener {
+
+    private int currentType = 0;
+
     /**
      * DrawerLayout
      */
@@ -57,8 +61,6 @@ public class MainActivity extends ActionBarActivity implements ViewAnimator.View
      * 右边栏
      */
     private RelativeLayout right_drawer;
-
-    private LinearLayout tree_layout;
 
     /**
      * 地图主界面
@@ -80,6 +82,42 @@ public class MainActivity extends ActionBarActivity implements ViewAnimator.View
         setActionBar();
         viewAnimator = new ViewAnimator<>(this, list, mapFragment, drawerLayout, this);
         initDatas();
+    }
+
+    private void getStationInfo() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("type", currentType);
+        params.put("cityId", null);
+        params.put("order", null);
+        params.put("yuqingType", null);
+        String url = UrlHelper.getStationsUrl(params);
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if (TextUtils.isEmpty(response)) {
+                    // todo 从数据库中获取数据
+                    return;
+                }
+                // TODO: 2015/9/7
+                // 1.转换返回的结果（from json）
+
+                // 2.清空地图已绘制的点
+
+                // 3.绘制新的点
+
+                // 4.重新绘制树数据
+
+                // 5.重新设置下拉选择框
+
+                // 6.将数据存储在数据库中
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        VolleyHelper.addToRequestQueue(request);
     }
 
     /**
@@ -106,7 +144,7 @@ public class MainActivity extends ActionBarActivity implements ViewAnimator.View
         });
         VolleyHelper.addToRequestQueue(request);
         // 2.获取水情数据
-        ConditionFragment fragment=new ConditionFragment();
+        ConditionFragment fragment = new ConditionFragment();
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.layout_condition, fragment)
                 .commit();
@@ -158,7 +196,6 @@ public class MainActivity extends ActionBarActivity implements ViewAnimator.View
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         left_drawer = (LinearLayout) findViewById(R.id.left_drawer);
         right_drawer = (RelativeLayout) findViewById(R.id.right_drawer);
-        tree_layout=(LinearLayout)findViewById(R.id.treeView);
         left_drawer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -169,19 +206,19 @@ public class MainActivity extends ActionBarActivity implements ViewAnimator.View
 
     @Override
     public ScreenShotable onSwitch(Resourceble slideMenuItem, ScreenShotable screenShotable, int position) {
-        if(slideMenuItem.getName()!="Close"){
+        if (slideMenuItem.getName() != "Close") {
             toolbar.setTitle(slideMenuItem.getName());
         }
         Map<String, Object> params = new HashMap<>();
         params.put("type", position);
-        params.put("cityId",null);
-        treeUtil = new TreeUtil(MainActivity.this, tree_layout, mapFragment);
+        params.put("cityId", null);
+        treeUtil = new TreeUtil(MainActivity.this, mapFragment);
         String url = "";
         switch (slideMenuItem.getName()) {
             case MenuConst.CLOSE:
                 return screenShotable;
             case MenuConst.RAIN:
-                params.put("yuqingType",0);
+                params.put("yuqingType", 0);
             default:
 
                 url = UrlHelper.getStationsUrl(params);

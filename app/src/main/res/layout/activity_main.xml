@@ -67,42 +67,18 @@
             android:minHeight="?attr/actionBarSize"
             android:theme="@style/MyActionBar" />
 
-        <TextView
-            android:id="@+id/tv_info_condition"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/info_toolbar"
-            android:background="@color/info_background"
-            android:gravity="start"
-            android:padding="5dp"
-
-            android:text="@string/info_condition"
-            android:textColor="@android:color/holo_blue_dark"
-            android:textSize="18sp" />
-
         <FrameLayout
-            android:id="@+id/layout_condition"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_info_condition"></FrameLayout>
+            android:layout_below="@id/info_toolbar"
+            android:id="@+id/right_fragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></FrameLayout>
 
-        <TextView
-            android:id="@+id/tv_info_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/layout_condition"
-            android:background="@color/info_background"
-            android:gravity="start"
-            android:padding="5dp"
-            android:text="@string/info_title"
-            android:textColor="@android:color/holo_blue_dark"
-            android:textSize="18sp" />
 
         <LinearLayout
             android:id="@+id/treeView"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_below="@id/tv_info_title"
+            android:layout_below="@id/right_fragment"
             android:orientation="vertical"></LinearLayout>
     </RelativeLayout>
     <!--    </ScrollView>-->

@@ -14,15 +14,9 @@ import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.Marker;
-import com.baidu.mapapi.search.core.VehicleInfo;
 import com.zcw.togglebutton.ToggleButton;
 
-import org.angmarch.views.NiceSpinner;
-
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import main.gis.money.waterinfo.R;
@@ -61,7 +55,6 @@ public class MapFragment extends Fragment implements ScreenShotable {
         // TODO Auto-generated method stub
         final View view = inflater.inflate(R.layout.fragment_map, null);
 
-        NiceSpinner niceSpinner = (NiceSpinner) view.findViewById(R.id.region_choice);
         mapType= (TextView) view.findViewById(R.id.mapType);
         toggleBtn= (ToggleButton) view.findViewById(R.id.toggle_mapType);
         toggleBtn.setOnToggleChanged(new ToggleButton.OnToggleChanged() {
@@ -76,8 +69,7 @@ public class MapFragment extends Fragment implements ScreenShotable {
                 }
             }
         });
-        List<String> dataset = new LinkedList<>(Arrays.asList("One", "Two", "Three", "Four", "Five"));
-        niceSpinner.attachDataSource(dataset);
+
         myBaiduMap = new BMap(view);
         baiduMap = myBaiduMap.initMap(R.id.bmapView, 113.255552, 23.121212, 12);
         BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory

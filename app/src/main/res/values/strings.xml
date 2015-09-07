@@ -14,6 +14,10 @@
         <item>最近24小时发布水情预警信号共{0}站</item>
     </string-array>
 
+    <string name="chaojing">水位超警/汛限共{0}站</string>
+    <string name="yuce">最近24小时发布水文预测共{0}站</string>
+    <string name="yujing">最近24小时发布水情预警信号共{0}站</string>
+
     <string name="check_time">时间</string>
     <string name="check_value">水位(米)</string>
 

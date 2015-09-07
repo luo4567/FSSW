@@ -29,13 +29,6 @@
         android:gravity="center"
         android:text="@string/normal" />
 
-    <org.angmarch.views.NiceSpinner
-        android:id="@+id/region_choice"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_alignBottom="@id/mapType"
-        android:layout_alignParentLeft="true"></org.angmarch.views.NiceSpinner>
-
     <com.zcw.togglebutton.ToggleButton
         android:id="@+id/toggle_mapType"
         android:layout_width="60dp"
