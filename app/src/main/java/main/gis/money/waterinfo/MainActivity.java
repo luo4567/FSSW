@@ -1,5 +1,6 @@
 package main.gis.money.waterinfo;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.widget.DrawerLayout;
@@ -8,7 +9,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.ArrayMap;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,8 +20,13 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,12 +35,15 @@ import io.codetail.animation.SupportAnimator;
 import io.codetail.animation.ViewAnimationUtils;
 import main.gis.money.waterinfo.consts.MenuConst;
 import main.gis.money.waterinfo.entity.Region;
-import main.gis.money.waterinfo.ui.Fragment.ConditionFragment;
+import main.gis.money.waterinfo.entity.Stations;
 import main.gis.money.waterinfo.ui.Fragment.MapFragment;
+import main.gis.money.waterinfo.ui.activity.LoadingActivity;
 import main.gis.money.waterinfo.util.GJsonHelper;
 import main.gis.money.waterinfo.util.TreeUtil;
+import main.gis.money.waterinfo.util.volley.DateTypeAdapter;
 import main.gis.money.waterinfo.util.volley.UrlHelper;
 import main.gis.money.waterinfo.util.volley.VolleyHelper;
+import money.gis.bmlibrary.BMap;
 import yalantis.com.sidemenu.interfaces.Resourceble;
 import yalantis.com.sidemenu.interfaces.ScreenShotable;
 import yalantis.com.sidemenu.model.SlideMenuItem;
@@ -66,6 +74,7 @@ public class MainActivity extends ActionBarActivity implements ViewAnimator.View
      * 地图主界面
      */
     private MapFragment mapFragment;
+    private BMap baiduMap;
 
     private Toolbar toolbar;
     private ViewAnimator viewAnimator;
@@ -100,21 +109,27 @@ public class MainActivity extends ActionBarActivity implements ViewAnimator.View
                 }
                 // TODO: 2015/9/7
                 // 1.转换返回的结果（from json）
-
+                Gson gson = new GsonBuilder()
+                        .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                        .registerTypeAdapter(Date.class, new DateTypeAdapter())
+                        .create();
+                List<Stations> stations = gson.fromJson(response, new TypeToken<List<Stations>>() {
+                }.getType());
                 // 2.清空地图已绘制的点
-
-                // 3.绘制新的点
-
-                // 4.重新绘制树数据
-
+                baiduMap.clear();
+                // 4.重新绘制树数据,并绘制新的点
+                treeUtil.UpdateTreeView(stations);
                 // 5.重新设置下拉选择框
-
                 // 6.将数据存储在数据库中
+                // 关闭loading效果
+                LoadingActivity.instance.finish();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                if(LoadingActivity.instance!=null){
+                    LoadingActivity.instance.finish();
+                }
             }
         });
         VolleyHelper.addToRequestQueue(request);
@@ -144,10 +159,7 @@ public class MainActivity extends ActionBarActivity implements ViewAnimator.View
         });
         VolleyHelper.addToRequestQueue(request);
         // 2.获取水情数据
-        ConditionFragment fragment = new ConditionFragment();
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.layout_condition, fragment)
-                .commit();
+        getStationInfo();
     }
 
     /**
@@ -190,6 +202,8 @@ public class MainActivity extends ActionBarActivity implements ViewAnimator.View
 
     private void initViews() {
         mapFragment = MapFragment.newInstance();
+        baiduMap = mapFragment.getMyBaiduMap();
+        treeUtil = new TreeUtil(MainActivity.this, mapFragment);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.content_frame, mapFragment)
                 .commit();
@@ -209,33 +223,12 @@ public class MainActivity extends ActionBarActivity implements ViewAnimator.View
         if (slideMenuItem.getName() != "Close") {
             toolbar.setTitle(slideMenuItem.getName());
         }
-        Map<String, Object> params = new HashMap<>();
-        params.put("type", position);
-        params.put("cityId", null);
-        treeUtil = new TreeUtil(MainActivity.this, mapFragment);
-        String url = "";
-        switch (slideMenuItem.getName()) {
-            case MenuConst.CLOSE:
-                return screenShotable;
-            case MenuConst.RAIN:
-                params.put("yuqingType", 0);
-            default:
-
-                url = UrlHelper.getStationsUrl(params);
-                treeUtil.getDataFromServer(url, "Stations");
-                return setAnimator(screenShotable, position);
-        }
-    }
-
-    private ScreenShotable setAnimator(ScreenShotable screenShotable, int position) {
-        View view = findViewById(R.id.content_frame);
-        int finalRadius = Math.max(view.getWidth(), view.getHeight());
-        SupportAnimator animator = ViewAnimationUtils.createCircularReveal(view, 0, position, 0, finalRadius);
-        animator.setInterpolator(new AccelerateInterpolator());
-        animator.setDuration(ViewAnimator.CIRCULAR_REVEAL_ANIMATION_DURATION);
-        findViewById(R.id.content_overlay).setBackgroundDrawable(new BitmapDrawable(getResources(), screenShotable.getBitmap()));
-        animator.start();
-        return mapFragment;
+        currentType = position;
+        // 设置加载动画
+        Intent showInfo = new Intent(MainActivity.this, LoadingActivity.class);
+        startActivity(showInfo);
+        getStationInfo();
+        return screenShotable;
     }
 
     @Override
@@ -275,36 +268,6 @@ public class MainActivity extends ActionBarActivity implements ViewAnimator.View
         if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-/*        int id = item.getItemId();
-        switch (id) {
-            case android.R.id.home:
-                if (showView == left_drawer) {
-                    if (!isDirection_left) { // 左边栏菜单关闭时，打开
-                        drawerLayout.openDrawer(left_drawer);
-                    } else {// 左边栏菜单打开时，关闭
-                        drawerLayout.closeDrawer(left_drawer);
-                    }
-                } else if (showView == right_drawer) {
-                    if (!isDirection_right) {// 右边栏关闭时，打开
-                        drawerLayout.openDrawer(right_drawer);
-                    } else {// 右边栏打开时，关闭
-                        drawerLayout.closeDrawer(right_drawer);
-                    }
-                }
-                break;
-            case R.id.action_personal:
-                if (!isDirection_right) {// 右边栏关闭时，打开
-                    if (showView == left_drawer) {
-                        drawerLayout.closeDrawer(left_drawer);
-                    }
-                    drawerLayout.openDrawer(right_drawer);
-                } else {// 右边栏打开时，关闭
-                    drawerLayout.closeDrawer(right_drawer);
-                }
-                break;
-            default:
-                break;
-        }*/
         return super.onOptionsItemSelected(item);
     }
 
@@ -330,7 +293,6 @@ public class MainActivity extends ActionBarActivity implements ViewAnimator.View
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }

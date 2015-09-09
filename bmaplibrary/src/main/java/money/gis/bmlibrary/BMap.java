@@ -187,4 +187,8 @@ public class BMap implements IMap {
         }
         return latLngs;
     }
+
+    public void clear(){
+        baiduMap.clear();
+    }
 }

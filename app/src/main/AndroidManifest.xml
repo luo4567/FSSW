@@ -40,6 +40,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.activity.ShowInfoActivity"></activity>
+        <activity
+            android:name=".ui.activity.LoadingActivity"
+            android:theme="@android:style/Theme.Translucent"></activity>
     </application>
 
 </manifest>

@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import main.gis.money.waterinfo.R;
+import main.gis.money.waterinfo.ui.activity.LoadingActivity;
 import main.gis.money.waterinfo.ui.activity.ShowInfoActivity;
 import main.gis.money.waterinfo.util.volley.UrlHelper;
 import money.gis.bmlibrary.BMap;

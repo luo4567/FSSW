@@ -52,4 +52,5 @@ dependencies {
     compile project(':slidelibrary')
     compile project(':baseadapter')
     compile project(':togglebuttonlibrary')
+    compile project(':fillableloadlibrary')
 }

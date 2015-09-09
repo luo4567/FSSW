@@ -61,43 +61,7 @@ public class TreeUtil {
         return root;
     }
 
-    /**
-     * 获取远程数据
-     */
-    public void getDataFromServer(String url, String tab) {
-        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                if (TextUtils.isEmpty(response)) {
-                    // TODO: 2015/8/18 出错后操作
-                    return;
-                }
-                TreeNode root = handleData(response);
-                treeView = new AndroidTreeView(context, root);
-                treeView.setDefaultAnimation(true);
-                treeView.setDefaultContainerStyle(R.style.TreeNodeStyleDivided, true);
-                treeLayout.addView(treeView.getView());
-                // TODO: 2015/8/18 保存到数据库
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyErrorHelper.getMessage(error, App.getContext());
-            }
-        });
-        VolleyHelper.addToRequestQueue(request, tab);
-    }
-
-    /**
-     * 处理获取到的数据
-     */
-    private TreeNode handleData(String response) {
-        Gson gson = new GsonBuilder()
-                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-                .registerTypeAdapter(Date.class, new DateTypeAdapter())
-                .create();
-        List<Stations> stations = gson.fromJson(response, new TypeToken<List<Stations>>() {
-        }.getType());
+    public void UpdateTreeView(List<Stations> stations){
         // 根据区域名称分类
         final TreeNode root = TreeNode.root();
         for (int i = 0; i < stations.size(); i++) {
@@ -106,6 +70,10 @@ public class TreeUtil {
             TreeNode children = createNode(cityName, stationInfos);
             root.addChild(children);
         }
-        return root;
+
+        treeView = new AndroidTreeView(context, root);
+        treeView.setDefaultAnimation(true);
+        treeView.setDefaultContainerStyle(R.style.TreeNodeStyleDivided, true);
+        treeLayout.addView(treeView.getView());
     }
 }
